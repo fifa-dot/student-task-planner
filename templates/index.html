@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои учебные задачи</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="top-bar">
+            <div>
+                <h1>🌸 Мои учебные задачи</h1>
+                <p>Привет, {{ username }}! Планируй учёбу с комфортом.</p>
+            </div>
+            <a class="logout-link" href="{{ url_for('logout') }}">Выйти</a>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section class="stats">
+            <div class="stat-card">
+                <h3>Всего задач</h3>
+                <p>{{ total }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Выполнено</h3>
+                <p>{{ completed }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Осталось</h3>
+                <p>{{ pending }}</p>
+            </div>
+        </section>
+
+        <section class="form-card">
+            <h2>Добавить новую задачу ✨</h2>
+            <form action="{{ url_for('add_task') }}" method="POST">
+                <label for="title">Название задачи</label>
+                <input type="text" id="title" name="title"
+                       placeholder="Например, подготовиться к экзамену" required>
+
+                <label for="description">Описание</label>
+                <textarea id="description" name="description"
+                          placeholder="Что нужно сделать?"></textarea>
+
+                <label for="due_date">Срок выполнения</label>
+                <input type="date" id="due_date" name="due_date">
+
+                <button type="submit">Добавить задачу</button>
+            </form>
+        </section>
+
+        <section class="tasks-section">
+            <h2>Мой список задач 📚</h2>
+
+            {% if tasks %}
+                {% for task in tasks %}
+                    <article class="task-card {% if task['completed'] %}completed{% endif %}">
+                        <div class="task-info">
+                            <h3>{{ task['title'] }}</h3>
+
+                            {% if task['description'] %}
+                                <p>{{ task['description'] }}</p>
+                            {% endif %}
+
+                            {% if task['due_date'] %}
+                                <p class="due-date">📅 Срок: {{ task['due_date'] }}</p>
+                            {% endif %}
+
+                            <p class="status">
+                                {% if task['completed'] %}
+                                    ✅ Выполнено
+                                {% else %}
+                                    ⏳ В процессе
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <div class="task-actions">
+                            <form action="{{ url_for('complete_task', task_id=task['id']) }}"
+                                  method="POST">
+                                <button type="submit" class="secondary-button">
+                                    {% if task['completed'] %}Вернуть{% else %}Выполнить{% endif %}
+                                </button>
+                            </form>
+
+                            <a class="edit-link"
+                               href="{{ url_for('edit_task', task_id=task['id']) }}">
+                                Изменить
+                            </a>
+
+                            <form action="{{ url_for('delete_task', task_id=task['id']) }}"
+                                  method="POST"
+                                  onsubmit="return confirm('Удалить эту задачу?')">
+                                <button type="submit" class="delete-button">Удалить</button>
+                            </form>
+                        </div>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <h3>Пока задач нет 🌷</h3>
+                    <p>Добавь свою первую учебную задачу выше!</p>
+                </div>
+            {% endif %}
+        </section>
+    </div>
+</body>
+</html>

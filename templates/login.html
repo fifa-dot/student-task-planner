@@ -1,0 +1,41 @@
+ ```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в аккаунт</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <h1>🌸 С возвращением!</h1>
+        <p>Войди, чтобы увидеть свои учебные задачи</p>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <label for="username">Логин</label>
+            <input type="text" id="username" name="username"
+                   placeholder="Твой логин" required>
+
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password"
+                   placeholder="Твой пароль" required>
+
+            <button type="submit">Войти</button>
+        </form>
+
+        <p>Ещё нет аккаунта?</p>
+        <a href="{{ url_for('register') }}">Зарегистрироваться</a>
+    </div>
+</body>
+</html>
+```
+ 
