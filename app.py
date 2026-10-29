@@ -251,7 +251,8 @@ def edit_task(task_id):
     return render_template("edit.html", task=task)
 
 
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
     
