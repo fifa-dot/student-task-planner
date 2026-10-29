@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование задачи</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <section class="form-card">
+            <h1>🌸 Редактирование задачи</h1>
+
+            <form method="POST">
+                <label for="title">Название задачи</label>
+                <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    value="{{ task['title'] }}"
+                    required
+                >
+
+                <label for="description">Описание</label>
+                <textarea id="description" name="description">{{ task['description'] or '' }}</textarea>
+
+                <label for="due_date">Срок выполнения</label>
+                <input
+                    type="date"
+                    id="due_date"
+                    name="due_date"
+                    value="{{ task['due_date'] or '' }}"
+                >
+
+                <button type="submit">Сохранить изменения</button>
+            </form>
+
+            <a class="edit-link" href="{{ url_for('index') }}">← Назад к задачам</a>
+        </section>
+    </div>
+</body>
+</html>
