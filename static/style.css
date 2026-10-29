@@ -233,3 +233,20 @@ a:hover {
         justify-content: flex-start;
     }
 }
+.stat-card {
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-card.active {
+    border-color: #d58bb5;
+    box-shadow: 0 4px 12px rgba(213, 139, 181, 0.2);
+}
