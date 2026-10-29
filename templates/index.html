@@ -24,20 +24,25 @@
             {% endif %}
         {% endwith %}
 
-        <section class="stats">
-            <div class="stat-card">
-                <h3>Всего задач</h3>
-                <p>{{ total }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Выполнено</h3>
-                <p>{{ completed }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Осталось</h3>
-                <p>{{ pending }}</p>
-            </div>
-        </section>
+       <section class="stats">
+    <button type="button" class="stat-card active"
+            onclick="filterTasks('all', this)">
+        <h3>Всего задач</h3>
+        <p>{{ total }}</p>
+    </button>
+
+    <button type="button" class="stat-card"
+            onclick="filterTasks('completed', this)">
+        <h3>Выполнено</h3>
+        <p>{{ completed }}</p>
+    </button>
+
+    <button type="button" class="stat-card"
+            onclick="filterTasks('pending', this)">
+        <h3>Осталось</h3>
+        <p>{{ pending }}</p>
+    </button>
+</section>
 
         <section class="form-card">
             <h2>Добавить новую задачу ✨</h2>
@@ -62,7 +67,8 @@
 
             {% if tasks %}
                 {% for task in tasks %}
-                    <article class="task-card {% if task['completed'] %}completed{% endif %}">
+                   <article class="task-card {% if task['completed'] %}completed{% endif %}"
+         data-status="{{ 'completed' if task['completed'] else 'pending' }}">
                         <div class="task-info">
                             <h3>{{ task['title'] }}</h3>
 
@@ -112,5 +118,24 @@
             {% endif %}
         </section>
     </div>
+    <script>
+function filterTasks(status, button) {
+    const tasks = document.querySelectorAll('.task-card');
+
+    tasks.forEach(task => {
+        if (status === 'all' || task.dataset.status === status) {
+            task.style.display = '';
+        } else {
+            task.style.display = 'none';
+        }
+    });
+
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.classList.remove('active');
+    });
+
+    button.classList.add('active');
+}
+</script>
 </body>
 </html>
